@@ -3,5 +3,5 @@
 ## Quick Start
 
 ```
-TODO: add the bash script
+bash <(curl -sL https://raw.githubusercontent.com/goncalogiga/spacevim-config/main/spacevim_setup.sh)
 ```
