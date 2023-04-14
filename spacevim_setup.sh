@@ -3,7 +3,6 @@
 set -e
 
 MIN_NEOVIM_VERSION="0.8.0"
-SPACEVIMD = "~/.SpaceVim.d"
 
 # Reset
 Color_Off='\033[0m'       # Text Reset
@@ -45,7 +44,7 @@ yesno () {
     printf "${BBlue}[spacevim-setup]${Color_Off} $1 [Y/n] ?\n"
     read answer
 
-    if [[ "$answer" != "Y" ]] | [[ "$answer" != "y" ]]
+    if [[ "$answer" != "Y" ]] && [[ "$answer" != "y" ]]
     then
         printf "${BRed}[spacevim-setup]${Color_Off} Aborting...\n"
         exit 0
@@ -72,8 +71,6 @@ install_neovim_appimage () {
 }
 
 install_spacevim () {
-    curl -sLf https://spacevim.org/install.sh | bash -s -- --uninstall
-
     question "Please insert the neovim binary's path (use which nvim or check your bashrc if you use aliases. If you don't have neovim installed press enter."
     read NEOVIM_EXEC_PATH
 
@@ -105,31 +102,49 @@ install_spacevim () {
 
     info "Fetching spacevim installer"
     curl -sLf https://spacevim.org/install.sh | bash
-
-    if [ -f "$NEOVIM_EXEC_PATH" ]
-    then
-        $NEOVIM_EXEC_PATH
-    fi
 }
 
 update_config () {
-    mv -f /tmp/spacevim-config/config/init.toml ~/.SpaceVim.d/init.toml
-    mv -f /tmp/spacevim-config/config/autoload/myspacevim.vim ~/.SpaceVim.d/autoload/myspacevim.vim
-    rm -r /tmp/.SpaceVim.d
+    info "Updating configuration files..."
+    mv -f /tmp/spacevim-config/init.toml ~/.SpaceVim.d/init.toml
+    mkdir -p ~/.SpaceVim.d/autoload
+    mv -f /tmp/spacevim-config/myspacevim.vim ~/.SpaceVim.d/autoload/myspacevim.vim
+    info "done."
+
+    info "Please paste your prefered fuzzy searcher (fd, fdfind, ...)"
+    read fzfengine
+
+    sed -i s/fdfind/${fzfengine}/g ~/.SpaceVim.d/autoload/myspacevim.vim
+    info "Successfully updated the fuzzy searcher."
+}
+
+upload_gitrepo () {
+    info "Uploading configuration files..."
+    git clone https://github.com/goncalogiga/spacevim-config
+    mkdir -p /tmp/spacevim-config/
+    mkdir -p /tmp/spacevim-config/autoload/
+    mv -f spacevim-config/config/init.toml /tmp/spacevim-config/
+    mv -f spacevim-config/config/myspacevim.vim /tmp/spacevim-config/
+    info "Files successfully extracted. Removing spacevim-config git.."
+    sudo rm -r spacevim-config
+    info "done."
 }
 
 # === main ===
 
-if [ -f "$SPACEVIMD" ]
+if ls ~/.SpaceVim &> /dev/null
 then
     info "SpaceVim was found. Do you wish to reinstall it ? [Y/n] If not this script will only reload the config files."
     read answer
 
-    if [[ "$answer" != "Y" ]] | [[ "$answer" != "y" ]]
+    if [[ "$answer" == "Y" ]] | [[ "$answer" == "y" ]]
     then
+        curl -sLf https://spacevim.org/install.sh | bash -s -- --uninstall
         install_spacevim
+        upload_gitrepo
+        update_config
     else
-        git clone https://github.com/goncalogiga/spacevim-config /tmp/
+        upload_gitrepo
         if ! cmp ~/.SpaceVim.d/init.toml /tmp/spacevim-config/config/init.toml
         then
             update_config
@@ -146,4 +161,6 @@ then
     fi
 else
     install_spacevim
+    upload_gitrepo
+    update_config
 fi
