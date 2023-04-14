@@ -106,9 +106,9 @@ install_spacevim () {
 
 update_config () {
     info "Updating configuration files..."
-    mv -f /tmp/spacevim-config/init.toml ~/.SpaceVim.d/init.toml
+    mv -f /tmp/spacevim-config/init.toml ~/.SpaceVim.d/
     mkdir -p ~/.SpaceVim.d/autoload
-    mv -f /tmp/spacevim-config/myspacevim.vim ~/.SpaceVim.d/autoload/myspacevim.vim
+    mv -f /tmp/spacevim-config/myspacevim.vim ~/.SpaceVim.d/autoload/
     info "done."
 
     info "Please paste your prefered fuzzy searcher (fd, fdfind, ...)"
