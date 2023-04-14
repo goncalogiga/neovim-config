@@ -1,0 +1,78 @@
+#=============================================================================
+# basic.toml --- basic configuration example for SpaceVim
+# Copyright (c) 2016-2023 Wang Shidong & Contributors
+# Author: Wang Shidong < wsdjeg@outlook.com >
+# URL: https://spacevim.org
+# License: GPLv3
+#=============================================================================
+
+
+# All SpaceVim option below [option] section
+[options]
+    # set spacevim theme. by default colorscheme layer is not loaded,
+    # if you want to use more colorscheme, please load the colorscheme
+    # layer
+    colorscheme = "space_vim_theme"
+    colorscheme_bg = "light"
+    # Disable guicolors in basic mode, many terminal do not support 24bit
+    # true colors
+    enable_guicolors = false
+    # Disable statusline separator, if you want to use other value, please
+    # install nerd fonts
+    statusline_separator = "nil"
+    statusline_iseparator = "bar"
+    buffer_index_type = 4
+    windows_index_type = 3
+    enable_tabline_filetype_icon = false
+    enable_statusline_mode = false
+    statusline_unicode = false
+    # tabulations
+    default_indent = 4
+    # Enable vim compatible mode, avoid changing origin vim key bindings
+    vimcompatible = true
+    # file tree to the left
+    filetree_direction = "left"
+    # Enable autoload/myspacevim.vim (a classic neovim configuration)
+    bootstrap_before = 'myspacevim#before'
+    bootstrap_after = 'myspacevim#after'
+
+
+# Enable autocomplete layer
+[[layers]]
+    name = 'autocomplete'
+    auto_completion_return_key_behavior = "complete"
+    auto_completion_tab_key_behavior = "cycle"
+
+# Terminal configuration layer
+[[layers]]
+    name = 'shell'
+    default_position = 'bottom'
+    default_height = 30
+
+# Python layer
+[[layers]]
+    name = "lang#python"
+
+# LSP layer
+[[layers]]
+    name = 'lsp'
+    enabled_clients = ['vimls', 'clangd']
+
+# Treesitter layer (highlighting and more
+[[layers]]
+  name = "treesitter"
+
+# Custom pluginq
+
+[[custom_plugins]]
+    # Theme
+    name = 'https://github.com/liuchengxu/space-vim-theme'
+    merged = 0
+
+[[custom_plugins]]
+    # FZF
+    name = 'https://github.com/junegunn/fzf'
+    merged = 0
+[[custom_plugins]]
+    name = 'https://github.com/junegunn/fzf.vim'
+    merged = 0

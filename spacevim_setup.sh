@@ -3,6 +3,7 @@
 set -e
 
 MIN_NEOVIM_VERSION="0.8.0"
+SPACEVIMD = "~/.SpaceVim.d"
 
 # Reset
 Color_Off='\033[0m'       # Text Reset
@@ -70,45 +71,79 @@ install_neovim_appimage () {
     info "Appimage installed. You might consider adding an alias to your .bashrc: alias nvim='nvim.appimage'"
 }
 
-# === Uninstalling SpaceVim === #
+install_spacevim () {
+    curl -sLf https://spacevim.org/install.sh | bash -s -- --uninstall
 
-curl -sLf https://spacevim.org/install.sh | bash -s -- --uninstall
+    question "Please insert the neovim binary's path (use which nvim or check your bashrc if you use aliases. If you don't have neovim installed press enter."
+    read NEOVIM_EXEC_PATH
 
-# === Checking Neovim version === #
-
-question "Please insert the neovim binary's path (use which nvim or check your bashrc if you use aliases. If you don't have neovim installed press enter."
-read NEOVIM_EXEC_PATH
-
-if [[ ${NEOVIM_EXEC_PATH} ]]
-then
-    if [ ! -f "$NEOVIM_EXEC_PATH" ]
+    if [[ ${NEOVIM_EXEC_PATH} ]]
     then
-        error "Path not found: '${NEOVIM_EXEC_PATH}'"
-    else
-        NEOVIM_VERSION=$(check_neovim_version $NEOVIM_EXEC_PATH)
-        
-        if [ $(version "$MIN_NEOVIM_VERSION") -ge $(version "$NEOVIM_VERSION") ]
+        if [ ! -f "$NEOVIM_EXEC_PATH" ]
         then
-            info "Neovim is not up to date ($NEOVIM_VERSION < $MIN_NEOVIM_VERSION)"
-            yesno "Install newest neovim appimage"
-            install_neovim_appimage
+            error "Path not found: '${NEOVIM_EXEC_PATH}'"
         else
-            info "Neovim is up to date !"
+            NEOVIM_VERSION=$(check_neovim_version $NEOVIM_EXEC_PATH)
+            
+            if [ $(version "$MIN_NEOVIM_VERSION") -ge $(version "$NEOVIM_VERSION") ]
+            then
+                info "Neovim is not up to date ($NEOVIM_VERSION < $MIN_NEOVIM_VERSION)"
+                yesno "Install newest neovim appimage"
+                install_neovim_appimage
+            else
+                info "Neovim is up to date !"
+            fi
         fi
+    else
+        yesno "Install newest neovim appimage"
+        install_neovim_appimage
+    fi
+
+    echo $NEOVIM_EXEC_PATH
+
+    # === SpaceVim set up === #
+
+    info "Fetching spacevim installer"
+    curl -sLf https://spacevim.org/install.sh | bash
+
+    if [ -f "$NEOVIM_EXEC_PATH" ]
+    then
+        $NEOVIM_EXEC_PATH
+    fi
+}
+
+update_config () {
+    mv -f /tmp/spacevim-config/config/init.toml ~/.SpaceVim.d/init.toml
+    mv -f /tmp/spacevim-config/config/autoload/myspacevim.vim ~/.SpaceVim.d/autoload/myspacevim.vim
+    rm -r /tmp/.SpaceVim.d
+}
+
+# === main ===
+
+if [ -f "$SPACEVIMD" ]
+then
+    info "SpaceVim was found. Do you wish to reinstall it ? [Y/n] If not this script will only reload the config files."
+    read answer
+
+    if [[ "$answer" != "Y" ]] | [[ "$answer" != "y" ]]
+    then
+        install_spacevim
+    else
+        git clone https://github.com/goncalogiga/spacevim-config /tmp/
+        if ! cmp ~/.SpaceVim.d/init.toml /tmp/spacevim-config/config/init.toml
+        then
+            update_config
+            info "Config files are now up-to-date !"
+            exit 0
+        fi
+        if ! cmp ~/.SpaceVim.d/autoload/myspacevim.vim /tmp/spacevim-config/config/autoload/myspacevim.vim
+        then
+            update_config
+            info "Config files are now up-to-date !"
+            exit 0
+        fi
+        info "Config files are up-to-date."
     fi
 else
-    yesno "Install newest neovim appimage"
-    install_neovim_appimage
-fi
-
-echo $NEOVIM_EXEC_PATH
-
-# === SpaceVim set up === #
-
-info "Fetching spacevim installer"
-curl -sLf https://spacevim.org/install.sh | bash
-
-if [ -f "$NEOVIM_EXEC_PATH" ]
-then
-    $NEOVIM_EXEC_PATH
+    install_spacevim
 fi
