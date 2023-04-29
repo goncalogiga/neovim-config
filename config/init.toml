@@ -12,7 +12,7 @@
     # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
-    colorscheme = "space_vim_theme"
+    colorscheme = "catppuccin-latte"
     colorscheme_bg = "light"
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
@@ -35,38 +35,64 @@
     # Enable autoload/myspacevim.vim (a classic neovim configuration)
     bootstrap_before = 'myspacevim#before'
     bootstrap_after = 'myspacevim#after'
+    # Use COC as autocomplete engine
+    autocomplete_method = "coc"
 
+    # Status line options
+    # Enable/Disable show mode on statusline
+    enable_statusline_mode = true
+    
+    # Show full path on statusline
+    enable_statusline_bfpath = true
+
+    # Components of status line
+    statusline_right_sections = [
+       'date',
+       'time'
+    ]
+
+# Enable checkers ? => this might not work
+[[layers]]
+    name = "checkers"
+    # nothing works here: set it up in myspacevim instead.
+
+# LSP layer
+# The lsp layer has to be enabled too. SpaceVim converts the configuration in the lsp layer and then passes it to coc.
+# You can put your language servers here.
+[[layers]] 
+    name = 'lsp'
+    filetypes = [
+        'python'
+    ]
 
 # Enable autocomplete layer
 [[layers]]
     name = 'autocomplete'
-    auto_completion_return_key_behavior = "complete"
-    auto_completion_tab_key_behavior = "cycle"
 
 # Terminal configuration layer
 [[layers]]
     name = 'shell'
-    default_position = 'bottom'
-    default_height = 30
+    default_position = 'right'
+    default_weight = 40
 
 # Python layer
 [[layers]]
     name = "lang#python"
+    python_interpreter = "/home/goncalo/Work/harfangenv/bin/python3"
+    enabled_linters = ['python', 'pylint']
 
-# LSP layer
 [[layers]]
-    name = 'lsp'
-    enabled_clients = ['vimls', 'clangd']
+  name = "git"
+  git_plugin = 'fugitive'
 
-# Treesitter layer (highlighting and more
-[[layers]]
-  name = "treesitter"
-
-# Custom pluginq
+# === CUSTOM PLUGINS ===
 
 [[custom_plugins]]
     # Theme
     name = 'https://github.com/liuchengxu/space-vim-theme'
+    merged = 0
+[[custom_plugins]]
+    name = 'https://github.com/catppuccin/nvim'
     merged = 0
 
 [[custom_plugins]]
@@ -75,4 +101,9 @@
     merged = 0
 [[custom_plugins]]
     name = 'https://github.com/junegunn/fzf.vim'
+    merged = 0
+
+[[custom_plugins]]
+    # VScode like minimap
+    name = "https://github.com/wfxr/minimap.vim"
     merged = 0
