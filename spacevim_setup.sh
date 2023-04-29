@@ -146,13 +146,22 @@ then
     else
         upload_gitrepo
         info "Checking if your local configuration matches the repository configuration..."
-        cmp ~/.SpaceVim.d/init.toml /tmp/spacevim-config/init.toml
-        does_init_differ=$?
-        cmp ~/.SpaceVim.d/autoload/myspacevim.vim /tmp/spacevim-config/myspacevim.vim
-        does_autoload_differ=$?
-        info "> out of sync init.toml = $does_init_differ"
-        info "> out of sync autoload = $does_autoload_differ"
-        if ! does_init_differ && ! does_autoload_differ
+        DOES_INIT_DIFFER=false
+        DOES_AUTOLOAD_DIFFER=false
+        
+        if ! cmp -s ~/.SpaceVim.d/init.toml /tmp/spacevim-config/init.toml
+        then
+            DOES_INIT_DIFFER=true
+        fi
+        if ! cmp -s ~/.SpaceVim.d/autoload/myspacevim.vim /tmp/spacevim-config/myspacevim.vim
+        then
+            DOES_AUTOLOAD_DIFFER=true
+        fi
+
+        info "Does init.toml differ: $DOES_INIT_DIFFER"
+        info "Does autoload content differ (might always be true if fuzzy finder is not fdfind): $DOES_AUTOLOAD_DIFFER"
+
+        if $DOES_INIT_DIFFER | $DOES_AUTOLOAD_DIFFER
         then
             update_config
             info "Config files are now up-to-date !"
