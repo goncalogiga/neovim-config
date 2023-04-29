@@ -146,7 +146,7 @@ then
     else
         upload_gitrepo
         info "Checking if your local configuration matches the repository configuration..."
-        if ! cmp ~/.SpaceVim.d/init.toml /tmp/spacevim-config/init.toml && ~/.SpaceVim.d/autoload/myspacevim.vim /tmp/spacevim-config/myspacevim.vim
+        if ! cmp ~/.SpaceVim.d/init.toml /tmp/spacevim-config/init.toml && ! ~/.SpaceVim.d/autoload/myspacevim.vim /tmp/spacevim-config/myspacevim.vim
         then
             update_config
             info "Config files are now up-to-date !"
