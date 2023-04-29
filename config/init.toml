@@ -12,7 +12,8 @@
     # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
-    colorscheme = "catppuccin-latte"
+    #colorscheme = "catppuccin-latte"
+    colorscheme = "catppuccin" # Dark theme
     colorscheme_bg = "light"
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
@@ -78,7 +79,7 @@
 # Python layer
 [[layers]]
     name = "lang#python"
-    python_interpreter = "/home/goncalo/Work/harfangenv/bin/python3"
+    python_interpreter = "/home/goncalo/Work/venvs/base/bin/python3"
     enabled_linters = ['python', 'pylint']
 
 [[layers]]
@@ -106,4 +107,9 @@
 [[custom_plugins]]
     # VScode like minimap
     name = "https://github.com/wfxr/minimap.vim"
+    merged = 0
+
+[[custom_plugins]]
+    # Distraction free mode (goyo)
+    name = "https://github.com/junegunn/goyo.vim"
     merged = 0

@@ -3,6 +3,7 @@
 set -e
 
 MIN_NEOVIM_VERSION="0.8.0"
+MIN_NODEJS_VERSION="16.19.0"
 
 # Reset
 Color_Off='\033[0m'       # Text Reset
@@ -28,7 +29,11 @@ BCyan='\033[1;36m'        # Cyan
 BWhite='\033[1;37m'       # White
 
 info () {
-  printf "${BBlue}[spacevim-setup]${Color_Off} ${Green}$1${Color_Off}\n"
+    printf "${BBlue}[spacevim-setup]${Color_Off} ${Green}$1${Color_Off}\n"
+}
+
+warning () {
+    printf "${BBlue}[spacevim-setup WARNING]${Color_Off} ${BYellow}$1${Color_Off}\n"
 }
 
 error () {
@@ -130,6 +135,35 @@ upload_gitrepo () {
     info "done."
 }
 
+test_node_version () {
+    info "Health check on nodejs (neccesary for some plugins)"
+    node --version
+    local NODEJS_VERSION=$(node --version)
+    NODEJS_VERSION=${NODEJS_VERSION:1}
+
+    if [ $(version "$MIN_NODEJS_VERSION") -ge $(version "$NODEJS_VERSION") ]
+    then
+        warning "Nodejs is out of date in order for some vim plugins to work proprely !"
+        warning "To update nodejs use nvm, install it if it is not installed already:"
+        warning "https://github.com/nvm-sh/nvm#install--update-script"
+        warning "To install using nvm, run the following in a terminal:"
+        warning "> npm install 16.19.1"
+        warning "Also install neovim just to be sure:"
+        warning "> npm install -g neovim"
+        warning "Some plugins also need yarn:"
+        warning "> npm install --global yarn"
+    else
+        info "Nodejs is up to date !"
+    fi
+}
+
+test_pip_vim() {
+    info "Make sure neovim and pynvim are installed:"
+    pip3 list | grep "vim"
+    info "Make sure a linter is installed :"
+    pip3 list | grep "lint"
+}
+
 # === main ===
 
 if ls ~/.SpaceVim &> /dev/null
@@ -143,6 +177,9 @@ then
         install_spacevim
         upload_gitrepo
         update_config
+        test_node_version
+        test_pip_vim
+        info "All done!"
     else
         upload_gitrepo
         info "Checking if your local configuration matches the repository configuration..."
@@ -173,4 +210,7 @@ else
     install_spacevim
     upload_gitrepo
     update_config
+    test_node_version
+    test_pip_vim
+    info "All done!"
 fi

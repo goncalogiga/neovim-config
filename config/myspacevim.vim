@@ -14,6 +14,12 @@ function! myspacevim#before() abort
 
     " ============================
 
+    " === Quickly hide window ===
+    
+    nnoremap <Space>hi :hide<CR>
+
+    " ===========================
+
 
     " === FZF Key Bindings ===
     
@@ -51,15 +57,56 @@ function! myspacevim#before() abort
     let g:ale_python_pylint_options = 'ignore=E501,W292,W293,W503,W291'
 
     " ======================
- 
+    
+    " === A widther goyo window for python ===
+    
+    let g:goyo_width = 150
+
+    " ========================================
+    
+    " === Make COC stfu ===
+
+    let g:coc_disable_startup_warning = 1
+
+    " =====================
+    
+    " === Terminal open/close ===
+    
+    local function Term()
+        local terminal_buffer_number = vim.fn.bufnr("term://")
+        local terminal_window_number = vim.fn.bufwinnr("term://")
+        local window_count = vim.fn.winnr("$")
+
+        if terminal_window_number > 0 and window_count > 1 then
+            vim.fn.execute(terminal_window_number .. "wincmd c")
+        elseif terminal_buffer_number > 0 and terminal_buffer_number ~= vim.fn.bufnr("%") then
+            vim.fn.execute("sb " .. terminal_buffer_number)  
+        elseif terminal_buffer_number == vim.fn.bufnr("%") then
+            vim.fn.execute("bprevious | sb " .. terminal_buffer_number .. " | wincmd p")
+        else
+            vim.fn.execute("sp term://zsh")
+        end
+    end
+
+    vim.api.nvim_create_user_command("Term", Term, {
+      desc = "Open terminal window",
+    })
+
+    vim.keymap.set("n", "<leader><space>", vim.cmd.Term, { noremap = true, silent = true })
+    vim.keymap.set("t", "jj", "<C-\\><C-n>", { noremap = true, silent = true })
+
+    " ===========================
+    
 endfunction
 
 function! myspacevim#after () abort
 
     " === Usefull rempas ===
-    "
+    
     vnoremap J :m '>+1<CR>gv=gv
     vnoremap K :m '<-2<CR>gv=gv
+
+    tnoremap <Esc> <C-\><C-n>
 
     " =====================
  
