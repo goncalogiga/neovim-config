@@ -1,9 +1,9 @@
-# spacevim-config
+# neovim-config
 
 ## Quick Start
 
 ```
-bash <(curl -sL https://raw.githubusercontent.com/goncalogiga/spacevim-config/main/spacevim_setup.sh)
+bash <(curl -sL https://raw.githubusercontent.com/goncalogiga/neovim-config/main/install.sh)
 ```
 
 This will install the configuration saved under this repo (`config/*`) and make sure the right version of `neovim` and `nodejs` is installed.

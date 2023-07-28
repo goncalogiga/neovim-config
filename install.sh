@@ -28,43 +28,55 @@ BPurple='\033[1;35m'      # Purple
 BCyan='\033[1;36m'        # Cyan
 BWhite='\033[1;37m'       # White
 
+
 info () {
-    printf "${BBlue}[spacevim-setup]${Color_Off} ${Green}$1${Color_Off}\n"
+    printf "${BBlue}[neovim-config]${Color_Off} ${Green}$1${Color_Off}\n"
 }
 
 warning () {
-    printf "${BBlue}[spacevim-setup WARNING]${Color_Off} ${BYellow}$1${Color_Off}\n"
+    printf "${BBlue}[neovim-config WARNING]${Color_Off} ${BYellow}$1${Color_Off}\n"
 }
 
 error () {
-    printf "${BRed}[spacevim-setup ERROR]${Color_Off} $1. Aborting...\n"
+    printf "${BRed}[neovim-config ERROR]${Color_Off} $1. Aborting...\n"
     exit 1
 }
 
 question () {
-    printf "${BBlue}[spacevim-setup]${Color_Off} $1\n"
+    printf "${BBlue}[neovim-config]${Color_Off} $1\n"
 }
 
 yesno () {
-    printf "${BBlue}[spacevim-setup]${Color_Off} $1 [Y/n] ?\n"
+    printf "${BBlue}[neovim-config]${Color_Off} $1 [Y/n] ?\n"
     read answer
 
     if [[ "$answer" != "Y" ]] && [[ "$answer" != "y" ]]
     then
-        printf "${BRed}[spacevim-setup]${Color_Off} Aborting...\n"
+        printf "${BRed}[neovim-config]${Color_Off} Aborting...\n"
         exit 0
     fi
 }
 
-# === usefull function === #
+# === Neovim Setup === #
 
-function version { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
+
+
+
+function version { 
+    echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; 
+}
+
+
+
 
 check_neovim_version () {
     local NEOVIM_VERSION=$($1 --version | grep 'NVIM')
     NEOVIM_VERSION=${NEOVIM_VERSION:6}
     echo $NEOVIM_VERSION
 }
+
+
+
 
 install_neovim_appimage () {
     info "Fetching latest neovim appimage"
@@ -75,7 +87,10 @@ install_neovim_appimage () {
     info "Appimage installed. You might consider adding an alias to your .bashrc: alias nvim='nvim.appimage'"
 }
 
-install_spacevim () {
+
+
+
+setup_neovim () {
     question "Please insert the neovim binary's path (use which nvim or check your bashrc if you use aliases. If you don't have neovim installed press enter."
     read NEOVIM_EXEC_PATH
 
@@ -100,40 +115,28 @@ install_spacevim () {
         yesno "Install newest neovim appimage"
         install_neovim_appimage
     fi
-
-    echo $NEOVIM_EXEC_PATH
-
-    # === SpaceVim set up === #
-
-    info "Fetching spacevim installer"
-    curl -sLf https://spacevim.org/install.sh | bash
 }
 
-update_config () {
-    info "Updating configuration files..."
-    mv -f /tmp/spacevim-config/init.toml ~/.SpaceVim.d/
-    mkdir -p ~/.SpaceVim.d/autoload
-    mv -f /tmp/spacevim-config/myspacevim.vim ~/.SpaceVim.d/autoload/
-    info "done."
 
-    info "Please paste your prefered fuzzy searcher (fd, fdfind, ...)"
-    read fzfengine
 
-    sed -i s/fdfind/${fzfengine}/g ~/.SpaceVim.d/autoload/myspacevim.vim
-    info "Successfully updated the fuzzy searcher."
+
+load_config () {
+    info "Downloading neovim configuration files..."
+    tmp_dir="/tmp/$(tr -dc A-Za-z0-9 </dev/urandom | head -c 8 ; echo '')/"
+    mkdir $tmp_dir
+    git clone https://github.com/goncalogiga/neovim-config $tmp_dir
+    info "Backing up previous configuration under $HOME/.config/nvim/.backup/."
+    mkdir -p $HOME/.config/nvim/.backup
+    rm -rf $HOME/.config/nvim/.backup/* # cleaning previous backup
+    touch $HOME/.config/nvim/backed_up_the_$(date '+%Y-%m-%d')
+    mv $HOME/.config/nvim/* $HOME/.config/nvim/.backup
+    info "Loading remote config locally..."
+    mv $tmp_dir/config/* $HOME/.config/nvim
+    info "Successfully loaded the lua configuration files."
 }
 
-upload_gitrepo () {
-    info "Uploading configuration files..."
-    git clone https://github.com/goncalogiga/spacevim-config
-    mkdir -p /tmp/spacevim-config/
-    mkdir -p /tmp/spacevim-config/autoload/
-    mv -f spacevim-config/config/init.toml /tmp/spacevim-config/
-    mv -f spacevim-config/config/myspacevim.vim /tmp/spacevim-config/
-    info "Files successfully extracted. Removing spacevim-config git.."
-    sudo rm -r spacevim-config
-    info "done."
-}
+
+
 
 test_node_version () {
     info "Health check on nodejs (neccesary for some plugins)"
@@ -157,6 +160,9 @@ test_node_version () {
     fi
 }
 
+
+
+
 test_pip_vim() {
     info "Make sure neovim and pynvim are installed:"
     pip3 list | grep "vim"
@@ -164,53 +170,20 @@ test_pip_vim() {
     pip3 list | grep "lint"
 }
 
+
+
+final_advice() {
+    info "Don't forget to run :PackerInstall and :checkhealth once you start neovim !"
+
+}
+
+
+
 # === main ===
 
-if ls ~/.SpaceVim &> /dev/null
-then
-    info "SpaceVim was found. Do you wish to reinstall it ? [Y/n] If not this script will only reload the config files."
-    read answer
-
-    if [[ "$answer" == "Y" ]] | [[ "$answer" == "y" ]]
-    then
-        curl -sLf https://spacevim.org/install.sh | bash -s -- --uninstall
-        install_spacevim
-        upload_gitrepo
-        update_config
-        test_node_version
-        test_pip_vim
-        info "All done!"
-    else
-        upload_gitrepo
-        info "Checking if your local configuration matches the repository configuration..."
-        DOES_INIT_DIFFER=false
-        DOES_AUTOLOAD_DIFFER=false
-        
-        if ! cmp -s ~/.SpaceVim.d/init.toml /tmp/spacevim-config/init.toml
-        then
-            DOES_INIT_DIFFER=true
-        fi
-        if ! cmp -s ~/.SpaceVim.d/autoload/myspacevim.vim /tmp/spacevim-config/myspacevim.vim
-        then
-            DOES_AUTOLOAD_DIFFER=true
-        fi
-
-        info "Does init.toml differ: $DOES_INIT_DIFFER"
-        info "Does autoload content differ (might always be true if fuzzy finder is not fdfind): $DOES_AUTOLOAD_DIFFER"
-
-        if $DOES_INIT_DIFFER | $DOES_AUTOLOAD_DIFFER
-        then
-            update_config
-            info "Config files are now up-to-date !"
-            exit 0
-        fi
-        info "Config files are up-to-date."
-    fi
-else
-    install_spacevim
-    upload_gitrepo
-    update_config
-    test_node_version
-    test_pip_vim
-    info "All done!"
-fi
+setup_neovim
+load_config
+test_node_version
+test_pip_vim
+final_advice
+info "All done!"

@@ -1,0 +1,4 @@
+-- vim.g.AutoPairsShortcutToggle = '<leader>pp'
+-- vim.g.AutoPairsShortcutFastWrap = '<leader>pe'
+-- vim.g.AutoPairsShortcutJump = '<leader>pn'
+-- vim.g.AutoPairsShortcutBackInsert = '<leader>pb'
