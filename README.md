@@ -27,3 +27,6 @@ raise an error. **The error logs are to be found uner
 Git integration videos:
 - https://www.youtube.com/watch?v=IyBAuDPzdFY (overall git workflow)
 - https://www.youtube.com/watch?v=vpwJ7fqD1CE (focused on merge conflicts)
+
+Motion Control:
+- https://www.youtube.com/watch?v=qZO9A5F6BZs
