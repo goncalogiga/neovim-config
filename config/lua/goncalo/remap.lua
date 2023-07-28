@@ -38,8 +38,8 @@ vim.keymap.set('n', '<leader>bd', ":BufferClose<CR>")
 vim.keymap.set('n', '<leader>b', "obreakpoint()<Esc>")
 
 -- Stringify a word
-vim.keymap.set('n', '<leader>"', 'bi"<Esc>wwi"<Esc>')
-vim.keymap.set('n', "<leader>'", "bi'<Esc>wwi'<Esc>")
+vim.keymap.set('n', '<leader>"', 'bi"<Esc>ea"<Esc>')
+vim.keymap.set('n', "<leader>'", "bi'<Esc>ea'<Esc>")
 
 -- Consequtive replaces
 vim.keymap.set('v', '<C-r>', "hy:%s/<C-r>h//gc<left><left><left>")
