@@ -49,6 +49,13 @@ vim.keymap.set('n', '<leader>b', "obreakpoint()<Esc>")
 vim.keymap.set('n', '<leader>"', 'bi"<Esc>ea"<Esc>')
 vim.keymap.set('n', "<leader>'", "bi'<Esc>ea'<Esc>")
 
--- Chunk visual selection
+-- Chunk {visual selection
 vim.keymap.set('n', '<leader>vj', 'v15j')
 vim.keymap.set('n', '<leader>vk', 'v15k')
+
+-- F-string
+vim.keymap.set('n', '<leader>fs', 'F"if<Esc>')
+
+--  Auto bracket
+vim.keymap.set('n', '{', 'F a{<Esc>f i}<Esc>') 
+vim.keymap.set('n', '}', 'ea}<Esc>') 
