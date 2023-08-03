@@ -20,7 +20,6 @@ vim.keymap.set("n", "<leader>gr", [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]])
 -- Replace current word - jump to the next occurence
 vim.keymap.set("n", "<leader>r", '*Nciw')
 vim.keymap.set("n", "<leader>n", 'cgn')
-vim.keymap.set("i", "<leader>n", '<Esc>cgn')
 
 --Nerd tree
 vim.keymap.set("n", "<leader>cd", ":NERDTreeClose<CR>:NERDTree %:p:h<CR>")
@@ -59,3 +58,6 @@ vim.keymap.set('n', '<leader>fs', 'F"if<Esc>')
 --  Auto bracket
 vim.keymap.set('n', '{', 'F a{<Esc>f i}<Esc>') 
 vim.keymap.set('n', '}', 'ea}<Esc>') 
+
+-- Rapid replace
+vim.keymap.set('v', '<leader>r', ":s/")
