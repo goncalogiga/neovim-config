@@ -127,7 +127,18 @@ return require('packer').startup(function(use)
         end
     }
 
+    -- Tag bar
     use("preservim/tagbar")
+    
+    -- Goyo
+    use("junegunn/goyo.vim")
+
+    -- Neorg
+    use {
+        "nvim-neorg/neorg",
+        -- !!! RUN THIS AFTER INSTALLATION !!!
+        -- run = ":Neorg sync-parsers",
+        requires = "nvim-lua/plenary.nvim",
+    }
+
 end)
-
-
