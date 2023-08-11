@@ -141,4 +141,7 @@ return require('packer').startup(function(use)
         requires = "nvim-lua/plenary.nvim",
     }
 
+    -- Yanky (neovim killring)
+    use("gbprod/yanky.nvim")
+
 end)

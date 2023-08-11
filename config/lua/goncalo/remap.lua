@@ -19,7 +19,6 @@ vim.keymap.set("n", "<leader>gr", [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]])
 
 -- Replace current word - jump to the next occurence
 vim.keymap.set("n", "<leader>r", '*Nciw')
-vim.keymap.set("n", "<leader>n", 'cgn')
 
 --Nerd tree
 vim.keymap.set("n", "<leader>cd", ":NERDTreeClose<CR>:NERDTree %:p:h<CR>")
@@ -59,5 +58,20 @@ vim.keymap.set('n', '<leader>fs', 'F"if<Esc>')
 vim.keymap.set('n', '{', 'F a{<Esc>f i}<Esc>') 
 vim.keymap.set('n', '}', 'ea}<Esc>') 
 
--- Rapid replace
-vim.keymap.set('v', '<leader>r', ":s/")
+-- Neorg: rapid access
+vim.keymap.set('n', '<leader>nn', ':Neorg index<CR>')
+vim.keymap.set('n', '<leader>nr', ':Neorg return<CR>')
+
+---- REGEX REMAPS ---- 
+
+-- Simple Replace of the pattern
+vim.keymap.set('v', '<leader>rr', ":s/")
+-- Keep only the pattern
+vim.keymap.set('v', '<leader>rk', ":g!//d<Left><Left>")
+-- Delete the pattern
+vim.keymap.set('v', '<leader>rd', ":g//d<Left><Left>")
+
+---------------------- 
+
+-- Math mode 
+vim.keymap.set('n', '<leader>m', 'i"<C-r>=')
