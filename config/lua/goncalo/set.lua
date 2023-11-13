@@ -36,3 +36,9 @@ vim.wo.wrap = false
 
 -- Buffer zone at the end of file
 vim.opt.scrolloff=999999
+
+-- Use virtual edit with visual block mode
+vim.opt.virtualedit = "block"
+
+-- Locate changes when using %s/...
+vim.opt.inccommand = "split"
