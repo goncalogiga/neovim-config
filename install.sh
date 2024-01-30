@@ -2,7 +2,7 @@
 
 set -e
 
-MIN_NEOVIM_VERSION="0.8.0"
+MIN_NEOVIM_VERSION="0.9.2"
 MIN_NODEJS_VERSION="16.19.0"
 
 # Reset
@@ -82,8 +82,8 @@ install_neovim_appimage () {
     info "Fetching latest neovim appimage"
     curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
     chmod u+x nvim.appimage
-    info "Moving appimage to /usr/bin (sudo might be required)"
-    sudo mv nvim.appimage /usr/bin
+    info "Moving appimage to $(dirname "$1") (sudo might be required)"
+    sudo mv nvim.appimage $1
     info "Appimage installed. You might consider adding an alias to your .bashrc: alias nvim='nvim.appimage'"
 }
 
@@ -106,7 +106,7 @@ setup_neovim () {
             then
                 info "Neovim is not up to date ($NEOVIM_VERSION < $MIN_NEOVIM_VERSION)"
                 yesno "Install newest neovim appimage"
-                install_neovim_appimage
+                install_neovim_appimage $NEOVIM_EXEC_PATH
             else
                 info "Neovim is up to date !"
             fi
