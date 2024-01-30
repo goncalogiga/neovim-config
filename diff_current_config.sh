@@ -1,1 +1,1 @@
-diff --color --unified=0 -r config/ $HOME/.config/nvim
+diff --color --unified=0 -xr ./config/ $HOME/.config/nvim
