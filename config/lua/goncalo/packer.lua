@@ -136,23 +136,11 @@ return require('packer').startup(function(use)
     -- Neorg
     use {
         "nvim-neorg/neorg",
-        config = function()
-            require('neorg').setup {
-                load = {
-                    ["core.defaults"] = {}, -- Loads default behaviour
-                    ["core.concealer"] = {}, -- Adds pretty icons to your documents
-                    ["core.dirman"] = { -- Manages Neorg workspaces
-                        config = {
-                            workspaces = {
-                                notes = "~/notes",
-                            },
-                        },
-                    },
-                },
-            }
-        end,
+        -- This is pinned for now. v7.0.O throws an error on startup
+        tag = "v6.2.0",
+        -- !!! RUN THIS AFTER INSTALLATION !!!
         -- run = ":Neorg sync-parsers",
-        requires = "nvim-lua/plenary.nvim",
+        requires = "nvim-lua/plenary.nvim"
     }
 
     -- Yanky (neovim killring)
@@ -161,4 +149,6 @@ return require('packer').startup(function(use)
     -- notify
     use("rcarriga/nvim-notify")
 
+    -- Better git conflict management
+    use("akinsho/git-conflict.nvim")
 end)
