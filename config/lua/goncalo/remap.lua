@@ -75,3 +75,6 @@ vim.keymap.set('v', '<leader>rd', ":g//d<Left><Left>")
 
 -- Math mode 
 vim.keymap.set('n', '<leader>m', 'i"<C-r>=')
+
+-- Go to the begining of the command
+vim.keymap.set('n', '<A-g>', "? $ <CR>")

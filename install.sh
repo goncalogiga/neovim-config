@@ -173,7 +173,10 @@ test_pip_vim() {
 
 
 final_advice() {
-    info "Don't forget to run :PackerInstall and :checkhealth once you start neovim !"
+    info "Don't forget to run the following setup commands once you start neovim:"
+    info "- :PackerInstall"
+    info "- :TSUpdate"
+    info "- :checkhealth"
 
 }
 
