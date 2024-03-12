@@ -11,15 +11,6 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 -- no more Q
 vim.keymap.set("n", "Q", "<nop>")
 
--- Replace word globaly (entire file)
-vim.keymap.set("n", "<leader>gr", [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]])
-
--- Replace word under context in the visual context [TODO]
--- vim.keymap.set("v", "<leader>r",  [[:s/\<<C-r><C-w>\>//gI<Left><Left><Left>]])
-
--- Replace current word - jump to the next occurence
-vim.keymap.set("n", "<leader>r", '*Nciw')
-
 --Nerd tree
 vim.keymap.set("n", "<leader>cd", ":NERDTreeClose<CR>:NERDTree %:p:h<CR>")
 
@@ -39,9 +30,6 @@ vim.keymap.set('n', '<A-l>', ":wincmd l<CR>")
 
 -- Delete buffer
 vim.keymap.set('n', '<leader>bd', ":BufferClose<CR>")
-
--- Adds a breakpoint
-vim.keymap.set('n', '<leader>b', "obreakpoint()<Esc>")
 
 -- Stringify a word
 vim.keymap.set('n', '<leader>"', 'bi"<Esc>ea"<Esc>')
@@ -72,9 +60,3 @@ vim.keymap.set('v', '<leader>rk', ":g!//d<Left><Left>")
 vim.keymap.set('v', '<leader>rd', ":g//d<Left><Left>")
 
 ---------------------- 
-
--- Math mode 
-vim.keymap.set('n', '<leader>m', 'i"<C-r>=')
-
--- Go to the begining of the command
-vim.keymap.set('n', '<A-g>', "? $ <CR>")

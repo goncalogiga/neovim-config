@@ -20,9 +20,6 @@ return require('packer').startup(function(use)
     -- Treesitter (syntax highlight)
     use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
 
-    -- Undotree
-    use('mbbill/undotree')
-
     -- Git Fugitive
     use('tpope/vim-fugitive')
 
@@ -63,9 +60,6 @@ return require('packer').startup(function(use)
     -- Tabulations
     use 'romgrk/barbar.nvim'
     use('lewis6991/gitsigns.nvim') -- OPTIONAL: for git status
-
-    -- Auto-paor
-    -- use('jiangmiao/auto-pairs')
 
     -- Quickly comment
     use('tpope/vim-commentary')
@@ -109,22 +103,11 @@ return require('packer').startup(function(use)
         "iamcco/markdown-preview.nvim",
         run = function() vim.fn["mkdp#util#install"]() end,
     })
-    use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
-
-    -- Allow for ssh connection
-    use {
-        'chipsenkbeil/distant.nvim',
-        branch = 'v0.2',
-        config = function()
-            require('distant').setup {
-                -- Applies Chip's personal settings to every machine you connect to
-                --
-                -- 1. Ensures that distant servers terminate with no connections
-                -- 2. Provides navigation bindings for remote directories
-                -- 3. Provides keybinding to jump into a remote file's parent directory
-                ['*'] = require('distant.settings').chip_default()
-            }
-        end
+    use { 
+        "iamcco/markdown-preview.nvim", 
+        run = "cd app && npm install", 
+        setup = function() vim.g.mkdp_filetypes = { "markdown" } end, 
+        ft = { "markdown" }
     }
 
     -- Tag bar
@@ -143,12 +126,16 @@ return require('packer').startup(function(use)
         requires = "nvim-lua/plenary.nvim"
     }
 
-    -- Yanky (neovim killring)
-    use("gbprod/yanky.nvim")
-
     -- notify
     use("rcarriga/nvim-notify")
 
     -- Better git conflict management
     use("akinsho/git-conflict.nvim")
+
+    -- Multicursor
+    -- Doc: https://github.com/mg979/vim-visual-multi/wiki/Mappings
+    use {
+        'mg979/vim-visual-multi',
+        branch = 'master',
+    }
 end)
