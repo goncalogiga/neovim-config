@@ -75,17 +75,22 @@ vim.diagnostic.config({
     virtual_text = true
 })
 
+-- Ruff linting for python
+-- https://github.com/astral-sh/ruff/blob/main/crates/ruff_server/docs/setup/NEOVIM.md
+require('lspconfig').ruff.setup {}
+
+-- Deperecated: using ruff instead of pyright
 -- Python LSP settings (all settings can be found here
 -- https://github.com/microsoft/pyright/blob/main/docs/settings.md)
-require('lspconfig').pyright.setup({
-    settings = {
-        python = {
-            analysis = {
-                typeCheckingMode = "off",
-                autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
-                diagnosticMode = 'openFilesOnly'
-            }
-        }
-    }
-})
+-- require('lspconfig').pyright.setup({
+--     settings = {
+--         python = {
+--             analysis = {
+--                 typeCheckingMode = "off",
+--                 autoSearchPaths = true,
+--                 useLibraryCodeForTypes = true,
+--                 diagnosticMode = 'openFilesOnly'
+--             }
+--         }
+--     }
+-- })
