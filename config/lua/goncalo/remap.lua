@@ -11,8 +11,8 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 -- no more Q
 vim.keymap.set("n", "Q", "<nop>")
 
---Nerd tree
-vim.keymap.set("n", "<leader>cd", ":NERDTreeClose<CR>:NERDTree %:p:h<CR>")
+--Nerd tree (also close tagbar if it's on)
+vim.keymap.set("n", "<leader>cd", ":TagbarClose<CR>:NERDTreeClose<CR>:NERDTree %:p:h<CR>")
 
 -- Normal tabbing
 vim.keymap.set("v", "<Tab>", ">gv")
