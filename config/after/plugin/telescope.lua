@@ -54,7 +54,7 @@ local setup_new_branch_environnement = function()
                 -- Switch to the updated branch
                 local out_switch_branch = vim.fn.system("git switch " .. string.gsub(branch, "origin/", ""))
                 if vim.v.shell_error ~= 0 then
-                    error("Failed to switch to tarhet branch: " .. out_switch_branch)
+                    error("Failed to switch to target branch: " .. out_switch_branch)
                 end
                 print(out_switch_branch)
 
@@ -71,6 +71,14 @@ local setup_new_branch_environnement = function()
             end)
         return true
     end
+
+    -- Git fetch new branches before calling telescope
+    local out_fetch = vim.fn.system("git fetch")
+    if vim.v.shell_error ~= 0 then
+        error("Failed to fetch new branches: " .. out_fetch)
+    end
+    print(out_fetch)
+
     require("telescope.builtin").git_branches(opts)
 end
 
