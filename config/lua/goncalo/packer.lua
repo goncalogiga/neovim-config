@@ -9,7 +9,7 @@ return require('packer').startup(function(use)
         "catppuccin/nvim", 
         as = "catppuccin",
         config = function()
-            vim.cmd.colorscheme("catppuccin-latte")
+            vim.cmd.colorscheme("catppuccin-macchiato")
         end
     }
 
@@ -138,4 +138,28 @@ return require('packer').startup(function(use)
         'mg979/vim-visual-multi',
         branch = 'master',
     }
+
+    -- Avante (LLMs inside of neovim)
+    use({
+        "yetone/avante.nvim",
+        run = "make BUILD_FROM_SOURCE=true",
+        requires = {
+            "nvim-treesitter/nvim-treesitter",
+            "stevearc/dressing.nvim",
+            "nvim-lua/plenary.nvim",
+            "MunifTanjim/nui.nvim",
+            { "nvim-tree/nvim-web-devicons", opt = true },
+            {
+                -- Markdown rendering support
+                'MeanderingProgrammer/render-markdown.nvim',
+                ft = { 'markdown', 'Avante' }, -- Load on specific file types
+                config = function()
+                    require('render-markdown').setup({
+                        file_types = { 'markdown', 'Avante' }
+                    })
+                end
+            },
+        },
+    })
+
 end)
