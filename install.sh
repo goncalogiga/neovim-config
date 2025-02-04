@@ -165,9 +165,9 @@ test_node_version () {
 
 test_pip_vim() {
     info "Make sure neovim and pynvim are installed:"
-    pip3 list | grep "vim"
+    python3 -m pip list | grep "vim"
     info "Make sure a linter is installed :"
-    pip3 list | grep "lint"
+    python3 -m pip list | grep "lint"
 }
 
 
