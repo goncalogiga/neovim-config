@@ -13,6 +13,14 @@ return require('packer').startup(function(use)
         end
     }
 
+    -- Telescope
+    use {
+        "nvim-telescope/telescope.nvim",
+        requires = {
+            { "nvim-telescope/telescope-live-grep-args.nvim" },
+        }
+    }
+
     -- FZF (fuzzy search engine)
     use('junegunn/fzf', {run = './install --bin'})
     use('junegunn/fzf.vim')
@@ -54,8 +62,8 @@ return require('packer').startup(function(use)
         require("toggleterm").setup()
     end}
 
-    -- Nerd tree
-    use('preservim/nerdtree')
+    -- Nvim tree
+    use('nvim-tree/nvim-tree.lua')
 
     -- Tabulations
     use 'romgrk/barbar.nvim'
